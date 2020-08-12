@@ -367,7 +367,23 @@ docker exec -it +容器ID + bash默认的命令行  # -it 以交互的方式进�
 ```shell
 # docker cp  容器ID：数据地址    服务器上地址
 docker cp 23a4:/home/test /home
-ps:这里的拷贝是一个手动的过程，实际上我们还可以通过-v 卷的技术
+ps:这里的拷贝是一个手动的过程，实际上我们还可以通过-v 卷的技术可以实现自动同步
+```
+
+## 实践
+
+#### 使用docker 部署一个nginx
+
+```shell
+1. docker search nginx     # 查找nginx  或者从docker hub中查找具体的详细
+2. docker pull nginx       # 下载nginx
+3. docker images           # 查看镜像是否下载成功
+4. docker run -d --name nginx01  -p 3000:80 nginx   # 使用后台方式启动nginx 同时给nginx命名为nginx1 同时将服务器的3000端口映射到nginx的80端口，这样的话外界就可以通过3000端口来访问nginx了。
+5. docker ps               # 查看nginx01容器是否启动
+   #  或者  curl localhost:3000   或者
+6. 阿里云服务器IP:3300  		# 在浏览器中访问，查看是否出现nginx的欢迎页面
+7. docker exec -it nginx01 bash   # 进入nginx 如果想要进行配置信息的设置，必须进入容器
+8. whereis nginx            # 查看nginx
 ```
 
 
