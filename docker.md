@@ -257,6 +257,119 @@ docker stop + 容器id        # 停止一个容器
 docker kill + 容器id        # 杀死一个容器
 ```
 
+#### 常用的其他命令
+
+**后台启动容器**
+
+通常情况下我们都是通过docker run -it 的方式（即进入容器的方式进行启动），但是我们也可以直接通过后台启动容器，而不进入容器。
+
+```shell
+# docker run -d + 镜像名  来后台启动容器
+root@haiying:~# docker run -d ubuntu
+88e36488d4386915d59c2f90c55b767dee456e5a354665206caec16052949840
+root@haiying:~# docker ps
+# 问题：通过后台启动的方式，会发现docker ps查询时启动的容器被关闭了
+# 常见的坑，docker 容器通过后台启动运行，那么就必须要有一个前台进程。docker发现没有应用，那么就会自动停止。
+# 以nginx为例，容器启动后，发现自己没有提供服务，就会立刻停止。
+
+```
+
+**查看日志**
+
+```shell
+docker logs -tf --tail 10 + 容器ID      # 查看10条日志
+# 参数说明
+--tail 		要显示的条数
+-tf			-t 表示时间戳  -f 表示输出日志
+```
+
+**查看容器中进程信息**
+
+```shell
+# docker top +容器ID 查看容器内进程信息
+
+root@haiying:~# docker top 2c45
+UID    PID     PPID     C    STIME     TTY  TIME             CMD
+root   11347    11323    0    Aug09    ?    00:00:27       node /opt/yarn-v1.22.4/bin/yarn.js start
+root   11399    11347   0     Aug09    ?    00:00:00       /bin/sh -c next start
+```
+
+**查看镜像的元数据**
+
+```shell
+# docker inspect + 容器ID  查看容器的元数据
+root@haiying:~# docker inspect 2c45
+[
+    {
+        "Id": "2c4526365f9577977a52e18b7e5e8a42c4864cbd1592641a45173655a80f5cfa",
+        "Created": "2020-08-09T13:21:05.151305142Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "yarn",
+            "start"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 11347,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2020-08-09T13:21:05.53921525Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        # ...
+        "Image": "sha256:51d94dc7db06d463c72019aec30c01b465008e516baf7b05fe7e192cb8e90f28",
+        "Name": "/app",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "Config": {},
+        "NetworkSettings": {
+            "Networks": {
+                "host": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "514dd57752f83059ae85f1a69d08cd236a05dad42f96f66d179d414f9c951342",
+                    "EndpointID": "5b8e5ebde47973c0ab0d0980e3da8c6155d54f06aaeaf37e78b1c2b926d3a82c",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "",
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]
+```
+
+**进入当前正在运行的容器**
+
+```shell
+# 容器都是通过后台方式运行的，这时候如果我们需要修改一些容器配置，那么久需要进入容器。
+# 命令
+docker exec -it +容器ID + bash默认的命令行  # -it 以交互的方式进入
+
+```
+
+**从容器内拷贝数据**
+
+数据都保存在docker容器中，只要容器没有被杀掉(无论容器是否处于运行开启状态)，那么数据就不会丢失。但是有时候为了防止数据丢失，我们需要把数据从容器内拷贝到服务器上。
+
+```shell
+# docker cp  容器ID：数据地址    服务器上地址
+docker cp 23a4:/home/test /home
+ps:这里的拷贝是一个手动的过程，实际上我们还可以通过-v 卷的技术
+```
+
 
 
 
