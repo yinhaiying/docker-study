@@ -98,3 +98,20 @@ docker run xxx会运行一个镜像，这个过程究竟是怎样的了？
 
 从上面的过程中我们可以看到，当运行docker run hello-world时，docker会首先从本地进行查找，看本地是否已经存在hello-world镜像，如果本地有，那么就直接使用本地镜像进行运行。如果本地没有这个镜像，那么会从docker hub(类似于github)进行下载，如果docker hub存在该镜像，那么可以进行下载到本地并运行，如果docker hub没有该镜像，那么会报错，提示找不到该镜像。这就是整个的docker run 的过程。
 
+#### docker的底层原理
+
+**docker内部是如何工作的？**
+
+docker是一个Client-Server的结构，Docker的守护进程运行在主机上，通过Socket从客户端访问。Docker-Server接收到Docker-Client的指令，守护进程就会执行这些命令。这些命令都是用于操作docker上的容器或者说镜像，所有的容器和镜像都是通过守护进程去进行操作。没有接收到lcient的命令，这些容器不会执行。
+
+![docker是如何工作的.png](https://i.loli.net/2020/08/12/KjgnRN3YXduVC52.png)
+
+**docker为什么比VM快？**
+
+![Vmware-vs-Docker.jpg](https://i.loli.net/2020/08/12/5o2LVAK4GrEBeRu.jpg)
+
+1. docker有着比虚拟机更少的抽象层。
+2. docker利用的是宿主机的内核，而VM需要搭建一个新的Guest OS
+
+所以说，新建一个容器的时候，docker不需要像虚拟机一样重新加载一个操作系统内核，而是直接使用宿主的内核。虚拟机是每创建一个容器都需要加载一个Guest OS。
+
