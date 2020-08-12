@@ -55,7 +55,7 @@ docker version            // 如果出现版本信息表示安装成功
 **查看docker能否正常运行**
 
 ```javascript
-docker run hello-world    // 表示创建一个helloworld镜像 
+docker run hello-world    // 表示创建一个helloworld镜像
 ```
 
 **查看hello-world镜像是否安装成功**
@@ -76,18 +76,25 @@ rm -rf /var/lib/docker    // 删除目录    /var/lib/docker是docker的默认�
 **阿里云镜像加速**
 
 1. 登录阿里云搜索容器镜像服务
-
 2. 找到镜像中心的镜像服务器
+3.  需要一步一步地完成下面的四步操作。
 
-3. ```javascript
-   sudo mkdir -p /etc/docker
-   sudo tee /etc/docker/daemon.json <<-'EOF'
-   {
-     "registry-mirrors": ["https://s360h258.mirror.aliyuncs.com"]
-   }
-   EOF
-   sudo systemctl daemon-reload
-   sudo systemctl restart docker
-   ```
+```javascript
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://s360h258.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
 
-   需要一步一步地完成上面的四步操作。
+#### docker run 运行过程
+
+docker run xxx会运行一个镜像，这个过程究竟是怎样的了？
+
+![docker run 运行流程图.png](https://i.loli.net/2020/08/12/CSQnG5gkPtM3jdh.png)
+
+从上面的过程中我们可以看到，当运行docker run hello-world时，docker会首先从本地进行查找，看本地是否已经存在hello-world镜像，如果本地有，那么就直接使用本地镜像进行运行。如果本地没有这个镜像，那么会从docker hub(类似于github)进行下载，如果docker hub存在该镜像，那么可以进行下载到本地并运行，如果docker hub没有该镜像，那么会报错，提示找不到该镜像。这就是整个的docker run 的过程。
+
