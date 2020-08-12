@@ -115,3 +115,78 @@ docker是一个Client-Server的结构，Docker的守护进程运行在主机上�
 
 所以说，新建一个容器的时候，docker不需要像虚拟机一样重新加载一个操作系统内核，而是直接使用宿主的内核。虚拟机是每创建一个容器都需要加载一个Guest OS。
 
+## docker的常用命令
+
+#### 帮助命令
+
+```javascript
+docker version       //  显示docker的版本信息
+docker info          //  查看更详细的docker信息，包括镜像，容器信息等。
+docker 命令 --help    //  帮助命令
+```
+
+官方文档地址
+
+```javascript
+https://docs.docker.com/reference/
+```
+
+#### 镜像命令
+
+**docker images：**查看所有本地的主机上的镜像
+
+```shell
+root@haiying:~# docker images
+REPOSITORY             TAG                 IMAGE ID            CREATED             SIZE
+haiying/node-web-app   latest              51d94dc7db06        2 days ago          1.37GB
+hello-world            latest              bf756fb1ae65        7 months ago        13.3kB
+# 解释
+REPOSITORY:镜像的仓库源名称
+TAG:镜像的标签（版本信息）
+IMAGE ID:镜像的id
+CREATED:镜像创建的时间
+SIZE:镜像的大小
+# 可选项
+root@haiying:~# docker images --help
+Usage:  docker images [OPTIONS] [REPOSITORY[:TAG]]
+List images
+Options:
+  -a, --all             # 列出所有的镜像
+  -q, --quiet           # 只显示镜像的ID 
+  
+```
+
+**docker search：**搜索镜像
+
+```shell
+root@haiying:~# docker search mysql
+NAME       DESCRIPTION                                     STARS              OFFICIAL            
+mysql      MySQL is a widely used, open-source relation…   9827                OK
+```
+
+**docker pull**：下载镜像
+
+```shell
+# docker pull + 镜像名称a:tag
+docker pull mysql 
+```
+
+**docker rmi**：删除镜像
+
+```shell
+# docker rmi -f + 镜像id或者镜像名称  删除一个镜像
+# docker images 通常删除前和删除后都使用docker images查看镜像是否存在或者是否删除成功
+root@haiying:~# docker rmi -f hello-world
+Untagged: hello-world:latest
+Untagged: hello-world@sha256:49a1c8800c94df04e9658809b006fd8a686cab8028d33cfba2cc049724254202
+Deleted: sha256:bf756fb1ae65adf866bd8c456593cd24beb6a0a061dedf42b26a993176745f6b
+```
+
+
+
+#### 容器命令
+
+
+
+
+
