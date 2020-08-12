@@ -186,6 +186,77 @@ Deleted: sha256:bf756fb1ae65adf866bd8c456593cd24beb6a0a061dedf42b26a993176745f6b
 
 #### 容器命令
 
+说明，我们有了镜像才能够创建容器，因此，我们可以先下载一个ubuntu来进行测试
+
+```shell
+docker pull ubuntu
+root@haiying:~# docker pull ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+3ff22d22a855: Pull complete                                                                             e7cb79d19722: Pull complete                                                                             323d0d660b6a: Pull complete                                                                             b7f616834fd0: Pull complete                                                                             Digest: sha256:5d1d5407f353843ecf8b16524bc5565aa332e9e6a1297c73a92d3e754b8a636d
+Status: Downloaded newer image for ubuntu:latest
+docker.io/library/ubuntu:latest
+```
+
+**新建容器并启动**
+
+```shell
+docker run [potion] images  启动一个镜像
+# 参数说明
+--name=Name 容器名字  mysql1 mysql2 用来区分容器
+-d          后台方式运行 （经常使用）
+-it         进入容器,使用交互方式运行 （经常使用）
+-p          指定容器端口         -p  8080:8080
+    -p   主机端口：容器端口（最常用的）
+    -p   容器端口
+-P          随机指定端口
+
+# 测试
+root@haiying:~# docker run -it ubuntu /bin/bash        # 进入ubuntu容器中。
+root@bcadb54c13dc:/# ls       #查看容器内的ubuntu 从获取的目录可以看到，实际上这个容器就是一个小型的Linux操作系统
+# 容器内的操作系统和容器外的操作系统没有关系。
+bin  boot  dev  etc  home  lib  lib32  lib64  libx32  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@bcadb54c13dc:/# 
+# 从容器中退回主机
+root@bcadb54c13dc:/# exit
+exit
+root@haiying:~#  
+```
+
+**列出所有运行容器的命令**
+
+```shell
+root@haiying:~# docker ps       # 列出当前正在运行的容器    
+# 参数
+        列出当前正在运行的容器
+-a      列出所有运行过的容器(历史记录)
+-n=2    列出最近运行的2个容器 
+
+```
+
+**退出容器**
+
+```shell
+exist      			# 退出容器同时停止容器
+ctrl + P +Q 		# 不停止容器进行退出
+```
+
+**删除容器**
+
+```shell
+docker kill + 容器id  # 关闭正在运行的容器  
+docker rm + 容器id    # docker rm不能删除正在运行的容器。如果想要强制删除使用rm -f
+```
+
+**启动和停止容器**
+
+```shell
+docker start + 容器id       # 启动一个容器
+docker restart + 容器id     # 重启一个容器  通常我们可以通过docker ps -a 获取历史容器id，然后使用restart重启
+docker stop + 容器id        # 停止一个容器
+docker kill + 容器id        # 杀死一个容器
+```
+
 
 
 
